@@ -65,9 +65,10 @@ ovanliga anrop i framtiden.
 ## Uppdatering efter PR #78
 
 PR #78 lade till teamets arbetssammanfattning från 2026-10-01. Den bekräftar
-att Trivy/Discord-kontrollen testats i K3s, men förändrar inte infra-repots
-bedömning av WIF, IAM, brandvägg, state eller Headscale. Uppgiften används som
-kompletterande evidens för company-website-repots supply-chain-kontroll.
+att Discord-webhook, Secret, RBAC, Trivy CronJob och en testad engångskörning
+finns i K3s. Den förändrar inte infra-repots bedömning av WIF, IAM, brandvägg,
+state eller Headscale. Uppgiften används som kompletterande evidens för
+company-website-repots supply-chain-kontroll.
 
 ## Vad betyder statusen i praktiken?
 
