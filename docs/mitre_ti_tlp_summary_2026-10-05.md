@@ -52,13 +52,13 @@ ovanliga anrop i framtiden.
 
 | Fynd eller kontroll | Evidens | MITRE ATT&CK-koppling | Status och defensiv uppföljning | Tilltro | TLP |
 | --- | --- | --- | --- | --- | --- |
-| Långlivad CI/CD-nyckel för GCP service account | PB-03, mergehistorik och lyckad WIF-deploy från `main` efter borttagning av nyckeln | [T1078.004 Cloud Accounts](https://attack.mitre.org/techniques/T1078/004/) | **Åtgärdad och verifierad.** WIF ersätter nyckeln. Följ Cloud Audit Logs för oväntade service-account-anrop och nyckelskapande. | Hög | CLEAR; nycklar och tokens är RED |
-| För vida CI/CD-behörigheter | PB-04, bootstrap-IAM och efterkontroll visar att tidigare bred roll togs bort | Ingen entydig ATT&CK-teknik; riskförstärkare för flera molntekniker | **Åtgärdad med rest-risk.** CI har avgränsade Compute-roller och bucketscope. `compute.securityAdmin` är bredare än idealet och ska omprövas. | Hög | CLEAR |
+| Långlivad CI/CD-nyckel för GCP service account | PB-03, mergehistorik och lyckad WIF-deploy från `main` efter borttagning av nyckeln | [T1078.004 Cloud Accounts](https://attack.mitre.org/techniques/T1078/004/) | **Åtgärdad och verifierad.** WIF ersätter nyckeln. Följ Cloud Audit Logs för oväntade service-account-anrop och skapande av nycklar. | Hög | CLEAR; nycklar och tokens är RED |
+| För vida CI/CD-behörigheter | PB-04, bootstrap-IAM och efterkontroll visar att tidigare bred roll togs bort | Ingen entydig ATT&CK-teknik; riskförstärkare för flera molntekniker | **Åtgärdad med kvarvarande risk.** CI har avgränsade Compute-roller och explicit åtkomst till state-bucketen. `compute.securityAdmin` är bredare än idealet och ska omprövas. | Hög | CLEAR |
 | Brandväggsregler som tidigare accepterade internettrafik | PB-05 och aktuell Terraform visar avgränsade regler för IAP, interntrafik, Tailnet och reverse proxy | [T1190 Exploit Public-Facing Application](https://attack.mitre.org/techniques/T1190/) | **Åtgärdad och verifierad.** Granska regler vid nya portar, taggar eller routning och bekräfta avsedda källnät. | Hög | CLEAR; nätinformation är AMBER+STRICT |
-| Terraform state och backupfiler kan innehålla känsliga värden | PB-02 är öppen; kurslabb visade att state/backup kan innehålla kodade värden | [T1552.001 Credentials In Files](https://attack.mitre.org/techniques/T1552/001/) och [T1140 Decode Files or Information](https://attack.mitre.org/techniques/T1140/) | **Öppet förbättringsarbete.** Behåll remote backend, strikt IAM och Git-ignore; rotera hemligheter som kan ha förekommit i state eller historik. | Hög för riskklassen, medel för aktuell exponering | CLEAR; faktisk state är RED |
+| Terraform state och backupfiler kan innehålla känsliga värden | PB-02 är öppen; kurslabb visade att statefiler och backupfiler kan innehålla kodade värden | [T1552.001 Credentials In Files](https://attack.mitre.org/techniques/T1552/001/) och [T1140 Decode Files or Information](https://attack.mitre.org/techniques/T1140/) | **Öppet förbättringsarbete.** Behåll en skyddad remote backend, strikt IAM och Git-ignore; rotera hemligheter som kan ha förekommit i state eller historik. | Hög för riskklassen, medel för aktuell exponering | CLEAR; faktisk state är RED |
 | Storage-åtkomst och tidigare publik bindning | PB-02: `allAuthenticatedUsers` togs bort; uniform bucket-level access är dokumenterad | [T1530 Data from Cloud Storage](https://attack.mitre.org/techniques/T1530/) | **Delvis åtgärdad.** Granska indirekt åtkomst, explicit public access prevention och IAM. Logga läsning av känsliga objekt och granska versionshantering. | Hög | CLEAR; objektlistor och IAM-exporter är AMBER+STRICT |
 | OS Login, IAP och Headscale minskar extern åtkomstyta | PR #39 och aktuell Terraform med OS Login och blockerade projekt-SSH-nycklar | [T1021.004 SSH](https://attack.mitre.org/techniques/T1021/004/) och [T1078 Valid Accounts](https://attack.mitre.org/techniques/T1078/) | **Delvis åtgärdad.** PB-09 är öppen tills minsta behövliga OS Login-roll och komplett användaröversikt är granskad. | Hög | CLEAR; enhets- och användarlistor är AMBER+STRICT |
-| Gemensam Headscale-admin-grupp i kurslabbet | PB-14 och arbetssammanfattning 2026-09-17 | [T1078 Valid Accounts](https://attack.mitre.org/techniques/T1078/) | **Öppet förbättringsarbete.** Beslutet underlättar kursarbete men är inte least privilege. Slutför nekad-trafik-test, rollback och senare rolluppdelning. | Hög | CLEAR |
+| Gemensam Headscale-admin-grupp i kurslabbet | PB-14 och arbetssammanfattning 2026-09-17 | [T1078 Valid Accounts](https://attack.mitre.org/techniques/T1078/) | **Öppet förbättringsarbete.** Beslutet underlättar kursarbete men följer inte least privilege. Slutför nekad-trafik-test, rollback och senare rolluppdelning. | Hög | CLEAR |
 | LookingGlass-kurslabb: command injection, metadata och objektversioner | Individuell flaggsammanfattning 2026-09-24, endast godkänd kursmiljö | [T1059.004 Unix Shell](https://attack.mitre.org/techniques/T1059/004/), [T1552.005 Cloud Instance Metadata API](https://attack.mitre.org/techniques/T1552/005/) och [T1530 Data from Cloud Storage](https://attack.mitre.org/techniques/T1530/) | **Labbfynd, inte Team 2-driftfynd.** Lärande: undvik skalexekvering av användarindata, begränsa metadata-åtkomst och tillämpa minsta IAM. | Hög för labbet | CLEAR; flaggor och tokens är RED |
 | Headscale-installation och policyhantering är inte fullt reproducerbar i Git | PB-12 och PB-14 är öppna | Ingen direkt ATT&CK-teknik; drift- och granskningsgap | **Öppet förbättringsarbete.** Versionshantera installation, policy och återställning utan hemligheter; verifiera konfiguration efter varje ändring. | Hög | CLEAR |
 
@@ -97,9 +97,9 @@ uppföljning - inte bara en rad i en logg eller en GitHub Issue.
 
 | Källtyp | Bidrag | Bedömning |
 | --- | --- | --- |
-| Terraform, bootstrap och Git-historik | Visar vilken kontroll som ar versionshanterad och mergad | Primarkalla med hog tilltro |
+| Terraform, bootstrap och Git-historik | Visar vilken kontroll som är versionshanterad och mergad | Primärkälla med hög tilltro |
 | GitHub Actions, Terraform-planer och efterkontroller | Visar att åtgärder verifierats i CI eller drift | Hög tilltro när körning och efterkontroll stämmer |
-| Backlog och arbetssammanfattningar | Kopplar risk till ansvar, beslut och aterstaende arbete | Medel till hog tilltro; kontrollera mot kod och CI |
+| Backlog och arbetssammanfattningar | Kopplar risk till ansvar, beslut och återstående arbete | Medel till hög tilltro; kontrollera mot kod och CI |
 | Godkända kurslabb | Ger realistiska exempel på angreppsbeteenden och detektionsbehov | Hög tilltro för labbet, inte för attribution eller Team 2:s drift |
 | MITRE ATT&CK | Ger gemensamt språk för angriparbeteenden och försvarsfrågor | Analysramverk, inte incidentbevis |
 
@@ -115,19 +115,19 @@ Eftersom infra-repot är publikt är den här sammanställningen märkt
 **TLP:CLEAR**. Det betyder inte att allt underlag är offentligt: råa loggar,
 statefiler och åtkomstdetaljer måste hållas utanför repot enligt nivåerna nedan.
 
-| Niva | Anvandning i Team 2 |
+| Nivå | Användning i Team 2 |
 | --- | --- |
-| **TLP:CLEAR** | Sanerade larande- och statusdokument som detta. Kan delas med utbildaren och ligga i publikt repo. |
-| **TLP:AMBER** | Detaljerade granskningsunderlag, exempelvis loggutdrag eller konfiguration som underlattar missbruk. Dela med Team 2 och utbildaren. |
-| **TLP:AMBER+STRICT** | Kallmaterial som maste stanna hos den ursprungliga mottagargruppen, exempelvis detaljerad atkomstinventering. |
-| **TLP:RED** | Nycklar, tokens, flaggvarden, signerade URL:er och faktisk Terraform state. Skriv aldrig detta i Git eller Discord. |
+| **TLP:CLEAR** | Sanerade lärande- och statusdokument som detta. Kan delas med utbildaren och ligga i ett publikt repo. |
+| **TLP:AMBER** | Detaljerade granskningsunderlag, exempelvis loggutdrag eller konfiguration som underlättar missbruk. Dela med Team 2 och utbildaren. |
+| **TLP:AMBER+STRICT** | Källmaterial som måste stanna hos den ursprungliga mottagargruppen, exempelvis detaljerad åtkomstinventering. |
+| **TLP:RED** | Nycklar, tokens, flaggvärden, signerade URL:er och faktisk Terraform state. Skriv aldrig detta i Git eller Discord. |
 
-## Rekommenderad fortsattning
+## Rekommenderad fortsättning
 
-1. Avsluta PB-02 med IAM-granskning av state-bucket och explicit public access prevention.
-2. Avsluta PB-09 med en dokumenterad minsta-behorighetsbedomning for OS Login.
-3. Avsluta PB-12 och PB-14 med reproducerbar Headscale-installation, policytest och rollback.
-4. Behall MITRE-kopplingen i nya issues: observation, berord teknik, telemetri, ansvarig kontroll och osakerhet.
+1. Avsluta PB-02 med en IAM-granskning av state-bucketen och explicit `public_access_prevention`.
+2. Avsluta PB-09 med en dokumenterad bedömning av minsta nödvändiga behörighet för OS Login.
+3. Avsluta PB-12 och PB-14 med en reproducerbar Headscale-installation, policytest och återställningsrutin.
+4. Behåll MITRE-kopplingen i nya issues: observation, berörd teknik, telemetri, ansvarig kontroll och osäkerhet.
 
 ## Referenser
 
