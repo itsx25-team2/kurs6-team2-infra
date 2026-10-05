@@ -7,12 +7,11 @@ Dagens infrastrukturdel av Workshop 3.5-4 fokuserade på att testa att lägga up
 ## Genomfört arbete med Supply Chain Security Scanner (Fajk)
 
 1. En webhook skapades på Discord.
-2. Den aktuella webhooken sparades som en Secret.
-3. RBAC-behörigheter skapades för att köra jobbet.
-4. Uppsättning av ett cron-job med Kubernetes och Trivy (lokalt hos Fajk).
-5. Test av cron-job (lokalt hos Fajk).
-
-Den aktuella koden är ännu inte comittad, utan testad lokalt hos Fajk.
+2. Den aktuella webhooken sparades som en Secret på produktionsservern (team2-primary).
+3. RBAC-behörigheter (ServiceAccount, ClusterRole, ClusterRoleBinding) skapades på produktionsservern för att ge skannern rättigheter.
+4. Uppsättning och applicering av ett cron-job med Kubernetes och Trivy genomfördes skarpt i K3s-klustret (produktionsmiljön).
+5. Testkörning av cron-jobbet (genom att manuellt skapa ett engångsjobb) verifierades direkt på team2-primary där resultatet skickades via webhooken.
+6. Koden är committad och mergad till main via PR #25.
 
 ## Git-status
 
