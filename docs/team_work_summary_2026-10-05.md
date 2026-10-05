@@ -28,6 +28,9 @@ presentera för utbildaren.
 5. TLP bedömdes utifrån att infra-repot är publikt. Den publicerbara
    sammanställningen är därför TLP:CLEAR, medan råa loggar, state, tokens och
    åtkomstdetaljer ska hållas utanför Git.
+6. En efterföljande granskning av PR #78 bekräftade Trivy/Discord-arbetet från
+   2026-10-01. Informationen berör främst company-website-repots
+   supply-chain-dokumentation och ändrar inte dagens infra-riskstatus.
 
 ## Resultat
 

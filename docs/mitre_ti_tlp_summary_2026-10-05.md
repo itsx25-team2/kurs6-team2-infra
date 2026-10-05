@@ -62,6 +62,13 @@ ovanliga anrop i framtiden.
 | LookingGlass-kurslabb: command injection, metadata och objektversioner | Individuell flaggsammanfattning 2026-09-24, endast godkänd kursmiljö | [T1059.004 Unix Shell](https://attack.mitre.org/techniques/T1059/004/), [T1552.005 Cloud Instance Metadata API](https://attack.mitre.org/techniques/T1552/005/) och [T1530 Data from Cloud Storage](https://attack.mitre.org/techniques/T1530/) | **Labbfynd, inte Team 2-driftfynd.** Lärande: undvik skalexekvering av användarindata, begränsa metadata-åtkomst och tillämpa minsta IAM. | Hög för labbet | CLEAR; flaggor och tokens är RED |
 | Headscale-installation och policyhantering är inte fullt reproducerbar i Git | PB-12 och PB-14 är öppna | Ingen direkt ATT&CK-teknik; drift- och granskningsgap | **Öppet förbättringsarbete.** Versionshantera installation, policy och återställning utan hemligheter; verifiera konfiguration efter varje ändring. | Hög | CLEAR |
 
+## Uppdatering efter PR #78
+
+PR #78 lade till teamets arbetssammanfattning från 2026-10-01. Den bekräftar
+att Trivy/Discord-kontrollen testats i K3s, men förändrar inte infra-repots
+bedömning av WIF, IAM, brandvägg, state eller Headscale. Uppgiften används som
+kompletterande evidens för company-website-repots supply-chain-kontroll.
+
 ## Vad betyder statusen i praktiken?
 
 | Status | Praktisk betydelse |
@@ -127,4 +134,5 @@ statefiler och åtkomstdetaljer måste hållas utanför repot enligt nivåerna n
 - [FIRST: Traffic Light Protocol 2.0](https://www.first.org/tlp/)
 - [Produktbacklog](product_backlog.md)
 - [Risker med statiska GCP-nycklar](GSA_key_risks.md)
+- [Arbetssammanfattning 2026-10-01](team_work_summary_2026-10-01.md)
 - [Arbetssammanfattning 2026-09-24](team_work_summary_2026-09-24.md)
