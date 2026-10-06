@@ -136,6 +136,48 @@ Terraform state, credentials, privata nycklar och planfiler ska inte commitas.
 
 `.gitignore` skyddar mot vanliga Terraform- och credential-filer, men varje teammedlem ansvarar fortfarande för att kontrollera `git status` innan commit.
 
+## GitHub Actions: WIF, Variables och Secrets
+
+Deploy-workflowen autentiserar mot GCP med Workload Identity Federation (WIF).
+Det innebär att GitHub Actions får en kortlivad identitet under körningen i
+stället för att använda en långlivad service account-nyckel.
+
+### Variables
+
+Workflowen `.github/workflows/deploy.yml` läser två Repository Variables:
+
+- `WORKLOAD_IDENTITY_PROVIDER`: identifierar Team 2:s WIF-provider i GCP.
+- `CICD_SERVICE_ACCOUNT`: anger vilket GCP service account som CI/CD får
+  impersonera.
+
+Värdena är konfigurationsuppgifter och ska inte skrivas ut i issues, Discord
+eller dokumentation. Ändringar av dem ska gå via branch, pull request och
+granskning.
+
+### Secrets
+
+Vid kontrollen 2026-10-06 fanns inga Repository Secrets i infra-repot och
+deploy-workflowen innehåller inga referenser till `secrets.*`. Den tidigare
+`GCP_SA_KEY` är borttagen; WIF ersätter behovet av en långlivad GCP-nyckel.
+
+Om teamet senare behöver lägga till en Secret ska den ha ett dokumenterat syfte,
+en ansvarig ägare, en rotationsrutin och en återkallningsrutin. Secret-värdet
+får aldrig exponeras i Git, Actions-loggar, issues eller Discord.
+
+### Verifiering
+
+Kontrollera alltid namn och status - aldrig Secret-värden - enligt följande:
+
+1. `deploy.yml` ska ha `id-token: write` och använda `vars.WORKLOAD_IDENTITY_PROVIDER`
+   samt `vars.CICD_SERVICE_ACCOUNT`.
+2. En lyckad `Deploy Infrastructure`-körning ska finnas efter Terraformändringar.
+   Den senaste verifierade körningen från `main` slutfördes 2026-09-26:
+   [GitHub Actions #36246127653](https://github.com/itsx25-team2/kurs6-team2-infra/actions/runs/36246127653).
+3. Pull request-kontrollen ska vara grön. Den verifierar Terraform-format och
+   validering, men utför ingen deploy.
+4. Om WIF, Variables eller en Secret ändras ska teamet först granska ändringen,
+   därefter köra rätt kontroll och dokumentera resultatet utan känsliga värden.
+
 ## Hantering av SSH-åtkomst och nycklar
 
 För att upprätthålla säkerheten i vår infrastruktur gäller följande rutin för nya användare och SSH-nycklar:
