@@ -24,7 +24,7 @@ Syftet är att samla säkerhetsrisker, förbättringar och dokumentationsbehov p
 | PB-05 | [#8](https://github.com/itsx25-team2/kurs6-team2-infra/issues/8) | Begränsa firewall-regeln från `0.0.0.0/0` | Hög | Done | `main.tf`, nätverk |
 | PB-06 | [#12](https://github.com/itsx25-team2/kurs6-team2-infra/issues/12) | Dokumentera säker hantering av Terraform state och credentials | Medel | Done | `docs/`, `.gitignore` |
 | PB-07 | [#11](https://github.com/itsx25-team2/kurs6-team2-infra/issues/11) | Granska Lasses föreslagna bucket-fix | Hög | Done | `member/larstorngrenchas` |
-| PB-08 | [#10](https://github.com/itsx25-team2/kurs6-team2-infra/issues/10) | Skapa tydlig rutin för secrets och variabler i GitHub Actions | Medel | In progress | GitHub Actions, repo settings |
+| PB-08 | [#10](https://github.com/itsx25-team2/kurs6-team2-infra/issues/10) | Skapa tydlig rutin för secrets och variabler i GitHub Actions | Medel | Done | Rutinen finns i README och verifierades genom [PR #80](https://github.com/itsx25-team2/kurs6-team2-infra/pull/80). |
 | PB-09 | [#15](https://github.com/itsx25-team2/kurs6-team2-infra/issues/15) | Kontrollera SSH-användare och åtkomstmodell | Hög | In progress | `variables.tf`, OS Login, Compute IAM |
 | PB-10 | [#14](https://github.com/itsx25-team2/kurs6-team2-infra/issues/14) | Dokumentera dagens Blue Team-beslut efter workshop | Medel | Done | `docs/blue_team_agenda_2026-09-08.md` |
 | PB-11 | [#16](https://github.com/itsx25-team2/kurs6-team2-infra/issues/16) | Granska och dokumentera uniform bucket-level access | Medel | Done | `bootstrap/main.tf`, GCS IAM |
@@ -34,7 +34,7 @@ Syftet är att samla säkerhetsrisker, förbättringar och dokumentationsbehov p
 
 ## Första Prioritering
 
-Nuvarande prioritering är PB-02, PB-08, PB-09, PB-12 och PB-14 eftersom de
+Nuvarande prioritering är PB-02, PB-09, PB-12 och PB-14 eftersom de
 berör åtkomst, autentisering, reproducerbar drift och nästa workshopsteg.
 
 PB-02 har två GitHub issues eftersom Lasse också skapade en mer konkret observation om `allAuthenticatedUsers` i issue #13. Den bör hanteras tillsammans med PB-02/PB-07 i reviewarbetet.
@@ -173,6 +173,14 @@ följas upp separat från denna avslutade granskning.
   [GitHub Actions #36051272258](https://github.com/itsx25-team2/kurs6-team2-infra/actions/runs/36051272258).
 - En efterkontroll gav `No changes` för både root och bootstrap. GCP-instanser,
   intern DNS och applikationens health endpoint verifierades som friska.
+
+## Statusuppdatering 2026-10-06 - GitHub Actions
+
+- PB-08 är klar. Rutinen för WIF Variables, frånvaron av Repository Secrets
+  och säker verifiering dokumenterades och mergades via
+  [PR #80](https://github.com/itsx25-team2/kurs6-team2-infra/pull/80).
+- GitHub stängde [issue #10](https://github.com/itsx25-team2/kurs6-team2-infra/issues/10)
+  automatiskt vid merge, eftersom PR:en refererade till `Closes #10`.
 
 ## Arbetsflöde
 
